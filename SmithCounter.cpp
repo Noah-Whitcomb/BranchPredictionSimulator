@@ -1,18 +1,19 @@
 // John Gaboriault-Whitcomb
 #include "SmithCounter.h"
 
-SmithCounter::SmithCounter(uint16_t initial_value)
+SmithCounter::SmithCounter(type_int initial_value)
 {
     if(initial_value > 3)
     {
-        assert(true);
+        cout << "Smith counter initial value too large.";
+        assert(false);
     }
     this->count = initial_value;
 }
 
 void SmithCounter::increment()
 {
-    uint8_t temp = this->count + 1;
+    type_int temp = this->count + 1;
     if(temp > 3)
     {
         return;
@@ -22,7 +23,7 @@ void SmithCounter::increment()
 
 void SmithCounter::decrement()
 {
-    uint8_t temp = this->count - 1;
+    type_int temp = this->count - 1;
     if(temp > 3)
     {
         return;
@@ -30,4 +31,8 @@ void SmithCounter::decrement()
     this->count -= 1;
 }
 
+bool SmithCounter::predictTaken()
+{
+    return this->count >= 2;
+}
 

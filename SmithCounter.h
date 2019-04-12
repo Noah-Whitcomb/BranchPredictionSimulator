@@ -5,17 +5,21 @@
 
 #include <stdint.h>
 #include <cassert>
+#include <iostream>
 
+typedef uint16_t type_int;
+
+using namespace std;
 class SmithCounter
 {
     private:
-        uint16_t count;
+        uint32_t count;
     public:
-        SmithCounter(uint16_t initial_value = 0);
+        SmithCounter(type_int initial_value = 0);
         void increment();
         void decrement();
-        uint16_t getCount() {return count;}
+        type_int getCount() {return count;}
+        bool predictTaken(); // return true if taken, false if not
 };
-
 
 #endif //ARCHITECTUREPRIOJ2_SMITHCOUNTER_H
