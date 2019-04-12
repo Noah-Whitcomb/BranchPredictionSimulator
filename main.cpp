@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "SmithCounter.h"
+#include "Simulator.h"
 
 #define PATH "C:\\Users\\crisc\\CLionProjects\\ArchitecturePrioj2\\BranchPredictionSimulator\\branch_trace.dat"
 
@@ -16,7 +16,7 @@ int main()
         return 0;
     }
 
-
+    Simulator sim = Simulator(32);
 
     uint32_t address;
     string taken;
