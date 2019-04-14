@@ -1,7 +1,7 @@
 // John Gaboriault-Whitcomb
-#include "Simulator.h"
+#include "BranchHistoryTable.h"
 
-Simulator::Simulator(string file_path, type_int num_bits, type_int initial_value)
+BranchHistoryTable::BranchHistoryTable(string file_path, type_int num_bits, type_int initial_value)
 {
     if(num_bits > 16)
     {
@@ -23,12 +23,12 @@ Simulator::Simulator(string file_path, type_int num_bits, type_int initial_value
     }
 }
 
-void Simulator::addSmithCounter(type_int initial_value)
+void BranchHistoryTable::addSmithCounter(type_int initial_value)
 {
     this->counters.emplace_back(SmithCounter(initial_value));
 }
 
-type_int Simulator::getIndex(type_int address, type_int numBits)
+type_int BranchHistoryTable::getIndex(type_int address, type_int numBits)
 {
     type_int index = address >> 2u;
     type_int operand = power(2, numBits) - 1;
@@ -37,7 +37,7 @@ type_int Simulator::getIndex(type_int address, type_int numBits)
     return index;
 }
 
-void Simulator::predictBranch(type_int address, bool taken)
+void BranchHistoryTable::predictBranch(type_int address, bool taken)
 {
     incNumBranches();
 
@@ -65,7 +65,7 @@ void Simulator::predictBranch(type_int address, bool taken)
     }
 }
 
-void Simulator::wrapUp()
+void BranchHistoryTable::wrapUp()
 {
     cout << "Number of branches: " << num_branches << endl;
     cout << "Number of branches taken: " << branches_taken << endl;
@@ -77,7 +77,7 @@ void Simulator::wrapUp()
     cout << "Overall rate of correct predictions: " << correct_rate << "%" << endl;
 }
 
-void Simulator::runSim()
+void BranchHistoryTable::runSim()
 {
     ifstream input_file;
     input_file.open(file_path);
@@ -108,7 +108,7 @@ void Simulator::runSim()
     wrapUp();
 }
 
-type_int Simulator::power(type_int base, type_int power)
+type_int BranchHistoryTable::power(type_int base, type_int power)
 {
     type_int return_val = 1;
     for(type_int i = 0; i<power; i++)
