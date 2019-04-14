@@ -44,11 +44,11 @@ void Simulator::predictBranch(type_int address, bool taken)
     //bitset<16> x(address);
     type_int index = getIndex(address, this->num_bits);
     //cout << "number in binary: " << x << " index from program:" << index << endl;
-    if(counters[index].getCount() >= 2 && taken)
+    if(counters[index].predictTaken() && taken)
     {
         incTakenCorrectPrediction();
     }
-    else if(counters[index].getCount() <= 1 && !taken)
+    else if(!counters[index].predictTaken() && !taken)
     {
         incNotTakenCorrectPrediction();
     }
