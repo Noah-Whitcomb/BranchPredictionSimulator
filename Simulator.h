@@ -14,7 +14,6 @@ class Simulator
     private:
         vector<SmithCounter> counters;
         void addSmithCounter(uint16_t initial_value);
-        type_int power(type_int base, type_int power);
         string file_path;
         type_int num_bits;
         uint64_t num_branches;

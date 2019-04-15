@@ -4,11 +4,10 @@
 
 #define SMITHCOUNTER_BITS 2u
 
-#include <stdint.h>
 #include <cassert>
 #include <iostream>
 
-typedef uint16_t type_int;
+#include "Util.h"
 
 using namespace std;
 class SmithCounter

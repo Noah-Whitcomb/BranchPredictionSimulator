@@ -6,9 +6,17 @@
 #define PATH "C:\\Users\\crisc\\CLionProjects\\ArchitecturePrioj2\\BranchPredictionSimulator\\branch_trace.dat"
 
 using namespace std;
-int main()
+int main(int argc, char** argv)
 {
-    Simulator sim = Simulator(PATH, 5);
+    Args* args = getArgs(argc, argv);
+    if(args == nullptr)
+    {
+        return 0;
+    }
+
+    Simulator sim = Simulator(args->file_path, args->num_bits_pc);
+
+    delete args;
 
     sim.runSim();
 
