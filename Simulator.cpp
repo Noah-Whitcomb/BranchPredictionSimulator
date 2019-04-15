@@ -1,14 +1,16 @@
 // John Gaboriault-Whitcomb
 #include "Simulator.h"
 
-Simulator::Simulator(string file_path, type_int num_bits, type_int initial_value)
+Simulator::Simulator(string file_path, type_int num_bits_smith_counter, type_int num_bits_bhr, type_int initial_value)
 {
-    if(num_bits > 16)
+    this->num_bits_pc = num_bits_smith_counter;
+    this->num_bits_bhr = num_bits_bhr;
+    this->total_bits = this->num_bits_bhr + this->num_bits_pc;
+    if(total_bits > 16)
     {
         cout << "number of bits too high" << endl;
         assert(false);
     }
-    this->num_bits = num_bits;
     this->file_path = file_path;
     this->num_branches = 0;
     this->branches_taken = 0;
@@ -16,39 +18,54 @@ Simulator::Simulator(string file_path, type_int num_bits, type_int initial_value
     this->branches_not_taken = 0;
     this->not_taken_corrently_predicted = 0;
 
-    type_int num_counters = power(2, num_bits);
+    // set up smith counters
+    type_int num_counters = power(2, total_bits);
     for(int i = 0; i<num_counters; i++)
     {
         addSmithCounter(initial_value);
     }
+
+    bhr = new BranchHistoryRegister(num_bits_bhr);
+
+}
+
+Simulator::~Simulator()
+{
+    delete bhr;
 }
 
 void Simulator::addSmithCounter(type_int initial_value)
 {
-    this->counters.emplace_back(SmithCounter(initial_value));
+    counters.emplace_back(SmithCounter(initial_value));
 }
 
-type_int Simulator::getIndex(type_int address, type_int numBits)
+type_int Simulator::getIndex(type_int address)
 {
+    // get bits from pc
     type_int index = address >> 2u;
-    type_int operand = power(2, numBits) - 1;
+    type_int operand = power(2, num_bits_pc) - 1;
 
     index = index & operand;
+
+    //append bits from pc to bhr
+    index = index << bhr->getNumBits();
+    index = index | bhr->getValue();
     return index;
 }
 
-void Simulator::predictBranch(type_int address, bool taken)
+void Simulator::runNextLine(type_int address, bool taken)
 {
     incNumBranches();
 
     //bitset<16> x(address);
-    type_int index = getIndex(address, this->num_bits);
+    type_int index = getIndex(address);
+    //cout << index << " ";
     //cout << "number in binary: " << x << " index from program:" << index << endl;
-    if(counters[index].getCount() >= 2 && taken)
+    if(counters[index].predictTaken() && taken)
     {
         incTakenCorrectPrediction();
     }
-    else if(counters[index].getCount() <= 1 && !taken)
+    else if(!counters[index].predictTaken() && !taken)
     {
         incNotTakenCorrectPrediction();
     }
@@ -63,6 +80,7 @@ void Simulator::predictBranch(type_int address, bool taken)
         incBranchesNotTaken();
         counters[index].decrement();
     }
+    bhr->updateValue(taken);
 }
 
 void Simulator::wrapUp()
@@ -101,19 +119,9 @@ void Simulator::runSim()
             did_take = false;
         }
         else assert(false);
-        predictBranch(address, did_take);
+        runNextLine(address, did_take);
     }
     input_file.close();
 
     wrapUp();
-}
-
-type_int Simulator::power(type_int base, type_int power)
-{
-    type_int return_val = 1;
-    for(type_int i = 0; i<power; i++)
-    {
-        return_val = return_val*base;
-    }
-    return return_val;
 }

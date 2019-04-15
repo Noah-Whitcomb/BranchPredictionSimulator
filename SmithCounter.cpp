@@ -31,7 +31,7 @@ void SmithCounter::decrement()
     this->count -= 1;
 }
 
-bool SmithCounter::predictTaken()
+bool SmithCounter::predictTaken() const
 {
     return this->count >= 2;
 }

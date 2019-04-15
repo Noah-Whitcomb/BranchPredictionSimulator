@@ -5,12 +5,15 @@ BranchHistoryRegister::BranchHistoryRegister(type_int num_bits, type_int initial
 {
     this->num_bits = num_bits;
     this->current_value = initial_value;
+    this->max_value= power(2, num_bits) - 1;
 }
-void BranchHistoryRegister::updateValue(const SmithCounter& smith)
+void BranchHistoryRegister::updateValue(bool taken)
 {
-    //TODO change this after debugging to simpler statement
-    type_int temp = current_value;
-    temp = temp << SMITHCOUNTER_BITS;
-    temp = temp & smith.getCount();
-    current_value = temp;
+
+    type_int returnval = current_value;
+    returnval = returnval << 1u;
+
+    type_int temp = taken ? 1 : 0;
+    returnval = returnval | temp;
+    current_value = returnval & max_value;
 }

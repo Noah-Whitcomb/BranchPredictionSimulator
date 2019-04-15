@@ -8,7 +8,7 @@
 using namespace std;
 int main()
 {
-    Simulator sim = Simulator(PATH, 2);
+    Simulator sim = Simulator(PATH, 2, 3);
 
     sim.runSim();
 

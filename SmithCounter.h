@@ -4,11 +4,10 @@
 
 #define SMITHCOUNTER_BITS 2u
 
-#include <stdint.h>
 #include <cassert>
 #include <iostream>
 
-typedef uint16_t type_int;
+#include "Util.h"
 
 using namespace std;
 class SmithCounter
@@ -16,11 +15,11 @@ class SmithCounter
     private:
         type_int count;
     public:
-        SmithCounter(type_int initial_value = 0);
+        explicit SmithCounter(type_int initial_value = 0);
         void increment();
         void decrement();
         type_int getCount() const {return count;}
-        bool predictTaken(); // return true if taken, false if not
+        bool predictTaken() const; // return true if the counter predicts taken, false if not
 };
 
 #endif //ARCHITECTUREPRIOJ2_SMITHCOUNTER_H
