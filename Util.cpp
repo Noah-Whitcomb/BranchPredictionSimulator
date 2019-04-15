@@ -17,10 +17,12 @@ Args* getArgs(int argc, char** argv)
     if(argc == 1)
     {
         runNoArgs();
+        return nullptr;
     }
     if(argc != 7)
     {
         runBadArgs();
+        return nullptr;
     }
     Args* args = new Args;
     for(size_t i = 1; i<argc; i++)
