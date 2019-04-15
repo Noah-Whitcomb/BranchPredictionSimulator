@@ -1,9 +1,9 @@
 // John Gaboriault-Whitcomb
 #include "Simulator.h"
 
-Simulator::Simulator(string file_path, type_int num_bits_smith_counter, type_int num_bits_bhr, type_int initial_value)
+Simulator::Simulator(string file_path, type_int num_bits_pc, type_int num_bits_bhr, type_int initial_value)
 {
-    this->num_bits_pc = num_bits_smith_counter;
+    this->num_bits_pc = num_bits_pc;
     this->num_bits_bhr = num_bits_bhr;
     this->total_bits = this->num_bits_bhr + this->num_bits_pc;
     if(total_bits > 16)

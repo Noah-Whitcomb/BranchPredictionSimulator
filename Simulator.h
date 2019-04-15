@@ -28,7 +28,7 @@ class Simulator
         uint64_t not_taken_corrently_predicted;
     public:
         ~Simulator();
-        Simulator(string file_path, type_int num_bits_smith_counter, type_int num_bits_bhr, uint16_t initial_value = 0);
+        Simulator(string file_path, type_int num_bits_pc, type_int num_bits_bhr, uint16_t initial_value = 0);
         void incNumBranches() {num_branches++;}
         void incBranchesTaken() {branches_taken++;}
         void incTakenCorrectPrediction() {taken_correctly_predicted++;}
