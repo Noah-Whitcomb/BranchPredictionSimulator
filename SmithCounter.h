@@ -16,7 +16,7 @@ class SmithCounter
     private:
         type_int count;
     public:
-        SmithCounter(type_int initial_value = 0);
+        explicit SmithCounter(type_int initial_value = 0);
         void increment();
         void decrement();
         type_int getCount() const {return count;}
