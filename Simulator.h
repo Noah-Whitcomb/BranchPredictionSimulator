@@ -1,6 +1,6 @@
 // John Gaboriault-Whitcomb
-#ifndef ARCHITECTUREPRIOJ2_BRANCHHISTORYTABLE_H
-#define ARCHITECTUREPRIOJ2_BRANCHHISTORYTABLE_H
+#ifndef ARCHITECTUREPRIOJ2_SIMULATOR_H
+#define ARCHITECTUREPRIOJ2_SIMULATOR_H
 
 #include <vector>
 #include <fstream>
@@ -9,7 +9,7 @@
 #include "SmithCounter.h"
 
 using namespace std;
-class BranchHistoryTable
+class Simulator
 {
     private:
         vector<SmithCounter> counters;
@@ -23,7 +23,7 @@ class BranchHistoryTable
         uint64_t branches_not_taken;
         uint64_t not_taken_corrently_predicted;
     public:
-        BranchHistoryTable(string file_path, type_int num_bits, uint16_t initial_value = 0);
+        Simulator(string file_path, type_int num_bits, uint16_t initial_value = 0);
         void incNumBranches() {num_branches++;}
         void incBranchesTaken() {branches_taken++;}
         void incTakenCorrectPrediction() {taken_correctly_predicted++;}
@@ -37,4 +37,4 @@ class BranchHistoryTable
 };
 
 
-#endif //ARCHITECTUREPRIOJ2_BRANCHHISTORYTABLE_H
+#endif //ARCHITECTUREPRIOJ2_SIMULATOR_H

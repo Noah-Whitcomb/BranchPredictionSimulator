@@ -2,6 +2,7 @@
 #ifndef ARCHITECTUREPRIOJ2_SMITHCOUNTER_H
 #define ARCHITECTUREPRIOJ2_SMITHCOUNTER_H
 
+#define SMITHCOUNTER_BITS 2u
 
 #include <stdint.h>
 #include <cassert>
@@ -13,12 +14,12 @@ using namespace std;
 class SmithCounter
 {
     private:
-        uint32_t count;
+        type_int count;
     public:
         SmithCounter(type_int initial_value = 0);
         void increment();
         void decrement();
-        type_int getCount() {return count;}
+        type_int getCount() const {return count;}
         bool predictTaken(); // return true if taken, false if not
 };
 
