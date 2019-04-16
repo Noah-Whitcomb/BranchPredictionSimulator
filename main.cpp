@@ -14,7 +14,7 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    Simulator sim = Simulator(args->file_path, args->num_bits_bhr, args->entries_bht);
+    Simulator sim = Simulator(args->file_path, args->num_bits_bhr);
 
     delete args;
 

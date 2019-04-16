@@ -1,13 +1,11 @@
 // John Gaboriault-Whitcomb
 #include "Simulator.h"
 
-Simulator::Simulator(string file_path, type_int num_bits_bhr, type_int entries_bht, type_int initial_value)
+Simulator::Simulator(string file_path, type_int num_bits_bhr, type_int initial_value)
 {
-    this->num_bits_pc = log2(entries_bht);
+    this->num_bits_pc = num_bits_bhr;
     this->num_bits_bhr = num_bits_bhr;
-    this->entries_bht = entries_bht;
-    if(this->num_bits_pc < 0) assert(false);
-    this->total_bits = this->num_bits_bhr + this->num_bits_pc;
+    this->total_bits = this->num_bits_bhr;
     if(total_bits > 16)
     {
         cout << "number of bits too high" << endl;
@@ -27,11 +25,13 @@ Simulator::Simulator(string file_path, type_int num_bits_bhr, type_int entries_b
         addSmithCounter(initial_value);
     }
 
-    for(size_t i = 0; i<this->entries_bht; i++)
-    {
-        bht.emplace_back(BranchHistoryRegister(num_bits_bhr));
-    }
+    bhr = new BranchHistoryRegister(this->num_bits_bhr);
 
+}
+
+Simulator::~Simulator()
+{
+    delete bhr;
 }
 
 void Simulator::addSmithCounter(type_int initial_value)
@@ -39,20 +39,16 @@ void Simulator::addSmithCounter(type_int initial_value)
     counters.emplace_back(SmithCounter(initial_value));
 }
 
-type_int Simulator::getIndex(type_int address, type_int& bht_index)
+type_int Simulator::getIndex(type_int address)
 {
     // get bits from pc
     type_int index = address >> 2u;
     type_int operand = power(2, num_bits_pc) - 1;
 
     index = index & operand;
-    bht_index = index;
-    // get entry at index in bht
-    type_int bht_val = bht[index].getValue();
 
-    //append bits from pc to bhr_val
-    index = index << num_bits_bhr;
-    index = index | bht_val;
+    // xor address and bhr bits
+    index = index ^ bhr->getValue();
     return index;
 }
 

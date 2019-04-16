@@ -15,7 +15,7 @@ class Simulator
 {
     private:
         vector<SmithCounter> counters;
-        vector<BranchHistoryRegister> bht;
+        BranchHistoryRegister* bhr;
         void addSmithCounter(uint16_t initial_value);
         string file_path;
         type_int num_bits_pc;
@@ -28,7 +28,8 @@ class Simulator
         uint64_t branches_not_taken;
         uint64_t not_taken_corrently_predicted;
     public:
-        Simulator(string file_path, type_int num_bits_bhr, type_int entries_bht, uint16_t initial_value = 0);
+        ~Simulator();
+        Simulator(string file_path, type_int num_bits_bhr, uint16_t initial_value = 0);
         void incNumBranches() {num_branches++;}
         void incBranchesTaken() {branches_taken++;}
         void incTakenCorrectPrediction() {taken_correctly_predicted++;}
@@ -36,7 +37,7 @@ class Simulator
         void incNotTakenCorrectPrediction() {not_taken_corrently_predicted++;}
         void runSim();
         void runNextLine(type_int address, bool taken);
-        type_int getIndex(type_int address, type_int& bht_index);
+        type_int getIndex(type_int address);
         void wrapUp();
 
 };
