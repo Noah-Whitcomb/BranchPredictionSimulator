@@ -1,10 +1,12 @@
 // John Gaboriault-Whitcomb
 #include "Simulator.h"
 
-Simulator::Simulator(string file_path, type_int num_bits_smith_counter, type_int num_bits_bhr, type_int initial_value)
+Simulator::Simulator(string file_path, type_int num_bits_bhr, type_int entries_bht, type_int initial_value)
 {
-    this->num_bits_pc = num_bits_smith_counter;
+    this->num_bits_pc = log2(entries_bht);
     this->num_bits_bhr = num_bits_bhr;
+    this->entries_bht = entries_bht;
+    if(this->num_bits_pc < 0) assert(false);
     this->total_bits = this->num_bits_bhr + this->num_bits_pc;
     if(total_bits > 16)
     {
@@ -20,18 +22,16 @@ Simulator::Simulator(string file_path, type_int num_bits_smith_counter, type_int
 
     // set up smith counters
     type_int num_counters = power(2, total_bits);
-    for(int i = 0; i<num_counters; i++)
+    for(size_t i = 0; i<num_counters; i++)
     {
         addSmithCounter(initial_value);
     }
 
-    bhr = new BranchHistoryRegister(num_bits_bhr);
+    for(size_t i = 0; i<this->entries_bht; i++)
+    {
+        bht.emplace_back(BranchHistoryRegister(num_bits_bhr));
+    }
 
-}
-
-Simulator::~Simulator()
-{
-    delete bhr;
 }
 
 void Simulator::addSmithCounter(type_int initial_value)
@@ -39,17 +39,20 @@ void Simulator::addSmithCounter(type_int initial_value)
     counters.emplace_back(SmithCounter(initial_value));
 }
 
-type_int Simulator::getIndex(type_int address)
+type_int Simulator::getIndex(type_int address, type_int& bht_index)
 {
     // get bits from pc
     type_int index = address >> 2u;
     type_int operand = power(2, num_bits_pc) - 1;
 
     index = index & operand;
+    bht_index = index;
+    // get entry at index in bht
+    type_int bht_val = bht[index].getValue();
 
-    //append bits from pc to bhr
-    index = index << bhr->getNumBits();
-    index = index | bhr->getValue();
+    //append bits from pc to bhr_val
+    index = index << num_bits_bhr;
+    index = index | bht_val;
     return index;
 }
 
@@ -58,7 +61,8 @@ void Simulator::runNextLine(type_int address, bool taken)
     incNumBranches();
 
     //bitset<16> x(address);
-    type_int index = getIndex(address);
+    type_int bht_index;
+    type_int index = getIndex(address, bht_index);
     //cout << index << " ";
     //cout << "number in binary: " << x << " index from program:" << index << endl;
     if(counters[index].predictTaken() && taken)
@@ -80,7 +84,7 @@ void Simulator::runNextLine(type_int address, bool taken)
         incBranchesNotTaken();
         counters[index].decrement();
     }
-    bhr->updateValue(taken);
+    bht[bht_index].updateValue(taken);
 }
 
 void Simulator::wrapUp()
