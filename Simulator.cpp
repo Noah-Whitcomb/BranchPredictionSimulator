@@ -57,8 +57,7 @@ void Simulator::runNextLine(type_int address, bool taken)
     incNumBranches();
 
     //bitset<16> x(address);
-    type_int bht_index;
-    type_int index = getIndex(address, bht_index);
+    type_int index = getIndex(address);
     //cout << index << " ";
     //cout << "number in binary: " << x << " index from program:" << index << endl;
     if(counters[index].predictTaken() && taken)
@@ -80,7 +79,7 @@ void Simulator::runNextLine(type_int address, bool taken)
         incBranchesNotTaken();
         counters[index].decrement();
     }
-    bht[bht_index].updateValue(taken);
+    bhr->updateValue(taken);
 }
 
 void Simulator::wrapUp()

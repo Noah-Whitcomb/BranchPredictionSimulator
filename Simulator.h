@@ -20,7 +20,6 @@ class Simulator
         string file_path;
         type_int num_bits_pc;
         type_int num_bits_bhr;
-        type_int entries_bht;
         type_int total_bits;
         uint64_t num_branches;
         uint64_t branches_taken;
