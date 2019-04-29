@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-
+#include <bitset>
 #include "Simulator.h"
 
 #define PATH "C:\\Users\\crisc\\CLionProjects\\ArchitecturePrioj2\\BranchPredictionSimulator\\branch_trace.dat"

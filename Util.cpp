@@ -81,8 +81,7 @@ void runHelp()
     printf("The following command line argument are needed for this program:\n");
     printf("[-f]   The next argument is the file to be used for input\n");
     printf("[-b]   The next argument is the number of bits to be used in the branch history register. This is\n");
-    printf("\talso used to calculate the size of the smith counter list (it is based on the total number of bits\n");
-    printf("\tfrom the pc and bhr)\n");
+    printf("\talso used to calculate the size of the smith counter list\n");
 }
 
 void runNoArgs()

@@ -42,9 +42,8 @@ void Simulator::addSmithCounter(type_int initial_value)
 type_int Simulator::getIndex(type_int address)
 {
     // get bits from pc
-    type_int index = address >> 2u;
+    type_int index = address >> (16u-num_bits_pc);
     type_int operand = power(2, num_bits_pc) - 1;
-
     index = index & operand;
 
     // xor address and bhr bits
